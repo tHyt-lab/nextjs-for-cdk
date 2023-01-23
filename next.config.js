@@ -1,12 +1,20 @@
-const withNextra = require('nextra')({
-  theme: 'nextra-theme-blog',
-  themeConfig: './theme.config.js',
-  // optional: add `unstable_staticImage: true` to enable Nextra's auto image import
-})
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // any configs you need
-}
+  reactStrictMode: true,
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+    disableStaticImages: true,
+  },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ["@svgr/webpack"],
+    });
 
-module.exports = withNextra(nextConfig)
+    return config;
+  },
+};
+
+module.exports = nextConfig;
